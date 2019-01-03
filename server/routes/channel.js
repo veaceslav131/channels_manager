@@ -4,7 +4,13 @@ const models = require('../models');
 module.exports = (({channelRouter}) => {
   channelRouter
     .get('/', async(ctx, next) => {
-      const channels = await models.Channel.findAll();
+      const channels = await models.Channel.findAll({
+	include: [{
+	  model: models.Tag,
+	  as: 'tags',
+	  required: false
+	}]
+      });
       ctx.body = {
 	channels
       };
@@ -27,7 +33,7 @@ module.exports = (({channelRouter}) => {
 	  }
 	} else {
 	  for(var i = 0; i < channelData.theme_tags.length; i++) {
-	    const check = await models.Tag.checkTag(channelData.theme_tags);
+	    const check = await models.Tag.checkTag(channelData.theme_tags[i]);
 	    if (check === null) {
 	      ctx.throw('ERROR: Tag doesn\'t exist', 500);
 	    } 
@@ -39,16 +45,16 @@ module.exports = (({channelRouter}) => {
       
       if(channelData.theme_tags) {
 	if(typeof(channelData.theme_tags) === 'string') {
-	  models.ChannelTag.create({'channel_id': channel.id, 'tag_id': channelData.theme_tags});
+	  models.ChannelTag.create({'ChannelId': channel.id, 'TagId': channelData.theme_tags});
+	}else{
+	  for(var i = 0; i < channelData.theme_tags.length; i++) {
+	    models.ChannelTag.create({'ChannelId': channel.id, 'TagId': channelData.theme_tags[i]});
+	  }
 	}
-      }else{
-	for(var i = 0; i < channelData.theme_tags.length; i++) {
-	  models.ChannelTag.create({'channel_id': channel.id, 'tag_id': channelData.theme_tags});
-	} 
       }
 
       ctx.body = {
-	channelData
+	channel
       };
     });
 });

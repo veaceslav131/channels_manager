@@ -22,13 +22,15 @@ module.exports =
 	social_messengers: Sequelize.STRING,
 	prices: Sequelize.STRING,
 	description: Sequelize.TEXT
-      }, {sequelize});
+      }, {
+	sequelize
+      });
     }
     static associate(models) {
       this.belongsToMany(models.Tag, {
 	through: 'ChannelTag',
 	as: 'tags',
-	foreignKey: 'channel_id'
+	foreignKey: 'ChannelId'
       });
       this.belongsTo(models.Status, {
 	foreignKey: 'status',

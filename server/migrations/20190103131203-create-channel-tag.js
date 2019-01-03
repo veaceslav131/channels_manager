@@ -8,10 +8,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      channel_id: {
+      ChannelId: {
         type: Sequelize.INTEGER
       },
-      tag_id: {
+      TagId: {
         type: Sequelize.INTEGER
       },
       createdAt: {

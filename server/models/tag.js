@@ -6,13 +6,15 @@ module.exports =
       return super.init({
 	is_youtube: Sequelize.BOOLEAN,
 	name: Sequelize.STRING
-      }, {sequelize});
+      }, {
+	sequelize
+      });
     }
     static associate (models) {
-      this.belongsToMany(models.Tag, {
+      this.belongsToMany(models.Channel, {
 	through: 'ChannelTag',
 	as: 'channels',
-	foreignKey: 'tag_id'
+	foreignKey: 'TagId'
       });
     }
     static checkTag(id) {
