@@ -35,6 +35,9 @@ module.exports =
       this.belongsTo(models.Status, {
 	foreignKey: 'status',
       });
+      this.hasMany(models.History, {
+	foreignKey: 'channel_id'
+      });
     }
     static checkChannel(id) {
       return this.findOne({where: {id: id}});

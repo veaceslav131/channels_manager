@@ -4,7 +4,13 @@ module.exports =
   class History extends Sequelize.Model{
     static init (sequelize) {
       return super.init({
-	channel_id: Sequelize.INTEGER,
+	channel_id: {
+	  type: Sequelize.INTEGER,
+	  references: {
+	    model: 'Channels',
+	    key: 'id'
+	  }
+	},
 	from: Sequelize.STRING,
 	message: Sequelize.STRING
       }, {sequelize});
