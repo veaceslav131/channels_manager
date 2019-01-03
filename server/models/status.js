@@ -1,10 +1,10 @@
-'use strict';
-module.exports = (sequelize, DataTypes) => {
-  const Status = sequelize.define('Status', {
-    name: DataTypes.STRING
-  }, {});
-  Status.associate = function(models) {
-    // associations can be defined here
+const Sequelize = require('sequelize');
+
+module.exports = 
+  class Status extends Sequelize.Model{
+    static init (sequelize) {
+      return super.init({
+	name: Sequelize.STRING
+      }, {sequelize});
+    }
   };
-  return Status;
-};

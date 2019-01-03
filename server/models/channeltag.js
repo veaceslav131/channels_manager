@@ -1,11 +1,23 @@
-'use strict';
-module.exports = (sequelize, DataTypes) => {
-  const ChannelTag = sequelize.define('ChannelTag', {
-    channel_id: DataTypes.INTEGER,
-    tag_id: DataTypes.INTEGER
-  }, {});
-  ChannelTag.associate = function(models) {
-    // associations can be defined here
+const Sequelize = require('sequelize');
+
+module.exports = 
+  class History extends Sequelize.Model{
+    static init (sequelize) {
+      return super.init({
+	channel_id: {
+	  type: Sequelize.INTEGER,
+	  references: {
+	    model: 'Channels',
+	    key: 'id'
+	  }
+	},
+	tag_id: {
+	  type: Sequelize.INTEGER,
+	  references: {
+	    model: 'Tags',
+	    key: 'id'
+	  }
+	},
+      }, {sequelize});
+    }
   };
-  return ChannelTag;
-};

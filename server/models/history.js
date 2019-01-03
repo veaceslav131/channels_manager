@@ -1,11 +1,17 @@
-'use strict';
-module.exports = (sequelize, DataTypes) => {
-  const History = sequelize.define('History', {
-    from: DataTypes.STRING,
-    message: DataTypes.STRING
-  }, {});
-  History.associate = function(models) {
-    // associations can be defined here
+const Sequelize = require('sequelize');
+
+module.exports = 
+  class History extends Sequelize.Model{
+    static init (sequelize) {
+      return super.init({
+	channel_id: Sequelize.INTEGER,
+	from: Sequelize.STRING,
+	message: Sequelize.STRING
+      }, {sequelize});
+    }
+    static associate (models) {
+      this.belongsTo(models.Channel, {
+	foreignKey: 'channel_id'
+      })
+    }
   };
-  return History;
-};

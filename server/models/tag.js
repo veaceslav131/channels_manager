@@ -1,11 +1,18 @@
-'use strict';
-module.exports = (sequelize, DataTypes) => {
-  const Tag = sequelize.define('Tag', {
-    is_youtube: DataTypes.BOOLEAN,
-    name: DataTypes.STRING
-  }, {});
-  Tag.associate = function(models) {
-    // associations can be defined here
+const Sequelize = require('sequelize');
+
+module.exports = 
+  class Tag extends Sequelize.Model{
+    static init (sequelize) {
+      return super.init({
+	is_youtube: Sequelize.BOOLEAN,
+	name: Sequelize.STRING
+      }, {sequelize});
+    }
+    static associate (models) {
+      this.belongsToMany(models.Tag, {
+	through: 'ChannelTag',
+	as: 'channels',
+	foreignKey: 'tag_id'
+      });
+    };
   };
-  return Tag;
-};
