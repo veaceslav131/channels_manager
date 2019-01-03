@@ -8,8 +8,12 @@ const app = new Koa();
 const statusRouter = new Router({
   prefix: '/statuses'
 });
+const tagRouter = new Router({
+  prefix: '/theme_tags'
+})
 
 require('./server/routes/status')({statusRouter});
+require('./server/routes/tag')({tagRouter});
 
 app
   .use(logger())
@@ -23,4 +27,5 @@ app
     }
   })
   .use(statusRouter.routes())
+  .use(tagRouter.routes())
   .listen(3000);
