@@ -21,7 +21,11 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      },
+      channel_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
     });
   },
   down: (queryInterface, Sequelize) => {

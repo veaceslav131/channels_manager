@@ -32,8 +32,7 @@ module.exports =
 	foreignKey: 'channel_id'
       });
       this.belongsTo(models.Status, {
-	foreignKey: 'status_id'
-	as: 'status'
+	foreignKey: 'status_id',
       });
     }
   };

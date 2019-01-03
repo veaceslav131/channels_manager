@@ -1,7 +1,15 @@
 const Koa = require('koa')
 const logger = require('koa-logger');
 
+const Router = require('koa-router');
+
 const app = new Koa();
+
+const statusRouter = new Router({
+  prefix: '/statuses'
+});
+
+require('./server/routes/status')({statusRouter});
 
 app
   .use(logger())
@@ -14,4 +22,5 @@ app
       ctx.app.emit('error', err, ctx);
     }
   })
+  .use(statusRouter.routes())
   .listen(3000);

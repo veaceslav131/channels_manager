@@ -14,9 +14,6 @@ module.exports = {
       channel_name: {
         type: Sequelize.STRING
       },
-      theme_tags: {
-        type: Sequelize.ARRAY
-      },
       status: {
         type: Sequelize.INTEGER
       },
