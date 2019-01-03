@@ -1,0 +1,32 @@
+{
+  "name": "channels_manager",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon --exec babel-node app.js",
+    "lint": "eslint ./"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cache-manager": "^2.9.0",
+    "cache-manager-redis-store": "^1.5.0",
+    "koa": "^2.6.2",
+    "koa-jwt": "^3.5.1",
+    "koa-logger": "^3.2.0",
+    "koa-mount": "^4.0.0",
+    "koa-route": "^3.2.0",
+    "sequelize": "^4.42.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "nodemon": "^1.18.9",
+    "sequelize-cli": "^5.4.0"
+  }
+}
