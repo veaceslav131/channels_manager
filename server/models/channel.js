@@ -36,4 +36,7 @@ module.exports =
 	foreignKey: 'status',
       });
     }
+    static checkChannel(id) {
+      return this.findOne({where: {id: id}});
+    }
   };

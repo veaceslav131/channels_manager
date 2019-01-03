@@ -18,8 +18,8 @@ module.exports = (({channelRouter}) => {
     .post('/', bodyParser, async(ctx, next) => {
       const channelData = ctx.request.body;
       if(channelData.status) {
-	const check = await models.Status.checkStatus(channelData.status);
-	if (check === null) {
+	const status = await models.Status.checkStatus(channelData.status);
+	if (status === null) {
 	  ctx.throw('ERROR: Status doesn\'t exist', 500);
 	}
       }
@@ -27,14 +27,14 @@ module.exports = (({channelRouter}) => {
       
       if(channelData.theme_tags) {
 	if(typeof(channelData.theme_tags) === 'string') {
-	  const check = await models.Tag.checkTag(channelData.theme_tags);
-	  if (check === null) {
+	  const tag = await models.Tag.checkTag(channelData.theme_tags);
+	  if (tag === null) {
 	    ctx.throw('ERROR: Tag doesn\'t exist', 500);
 	  }
 	} else {
 	  for(var i = 0; i < channelData.theme_tags.length; i++) {
-	    const check = await models.Tag.checkTag(channelData.theme_tags[i]);
-	    if (check === null) {
+	    const tag = await models.Tag.checkTag(channelData.theme_tags[i]);
+	    if (tag === null) {
 	      ctx.throw('ERROR: Tag doesn\'t exist', 500);
 	    } 
 	  }
@@ -56,5 +56,22 @@ module.exports = (({channelRouter}) => {
       ctx.body = {
 	channel
       };
+    })
+    .get('/:id/history', bodyParser, async(ctx, next) => {
+      const history = await models.History.findAll({where: {channel_id: ctx.params.id}});
+      ctx.body = {
+	history
+      }
+    })
+    .post('/:id/history', bodyParser, async(ctx, next) => {
+      const channel = await models.Channel.checkChannel(ctx.params.id);
+      if(channel === null) {
+	ctx.throw('ERROR: Channel doesn\'t exist', 500);
+      } else {
+	const history = await models.History.create(ctx.request.body);
+	ctx.body = {
+	  history
+	}
+      }
     });
 });
