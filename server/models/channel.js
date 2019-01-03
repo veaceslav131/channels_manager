@@ -12,7 +12,6 @@ module.exports =
 	  type: Sequelize.STRING,
 	  allowNull: false
 	},
-	status: Sequelize.INTEGER,
 	name: Sequelize.STRING,
 	email:  {
 	  type: Sequelize.STRING,
@@ -32,7 +31,7 @@ module.exports =
 	foreignKey: 'channel_id'
       });
       this.belongsTo(models.Status, {
-	foreignKey: 'status_id',
+	foreignKey: 'status',
       });
     }
   };

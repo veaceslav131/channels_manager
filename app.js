@@ -11,9 +11,13 @@ const statusRouter = new Router({
 const tagRouter = new Router({
   prefix: '/theme_tags'
 })
+const channelRouter = new Router({
+  prefix: '/channel'
+})
 
 require('./server/routes/status')({statusRouter});
 require('./server/routes/tag')({tagRouter});
+require('./server/routes/channel')({channelRouter});
 
 app
   .use(logger())
@@ -28,4 +32,5 @@ app
   })
   .use(statusRouter.routes())
   .use(tagRouter.routes())
+  .use(channelRouter.routes())
   .listen(3000);

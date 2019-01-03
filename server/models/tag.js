@@ -14,5 +14,8 @@ module.exports =
 	as: 'channels',
 	foreignKey: 'tag_id'
       });
-    };
+    }
+    static checkTag(id) {
+      return this.findOne({where: {id: id}});
+    }
   };

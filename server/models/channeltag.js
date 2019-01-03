@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
 module.exports = 
-  class History extends Sequelize.Model{
+  class ChannelTag extends Sequelize.Model{
     static init (sequelize) {
       return super.init({
 	channel_id: {

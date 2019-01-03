@@ -7,4 +7,7 @@ module.exports =
 	name: Sequelize.STRING
       }, {sequelize});
     }
+    static checkStatus(id) {
+      return this.findOne({where: {id: id}});
+    }
   };
