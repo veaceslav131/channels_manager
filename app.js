@@ -5,7 +5,7 @@ const bodyParser = require('koa-body')();
 const cacheManager = require('cache-manager');
 const redisStore = require('cache-manager-redis-store');
 const mount = require('koa-mount');
-const url = require('url');
+const jwt = require('koa-jwt');
 
 //Cache initialize
 
@@ -25,17 +25,22 @@ redisClient.on('error', (error) => {
 
 const ttl = 5;
 
+//Channels controller
 const getChannels = require('./server/controllers/channels');
 
 const channels = new Koa();
 
 const channelsRouter = new Router();
 channelsRouter.get('/', bodyParser, async ctx => {
-  ctx.body = await getChannels(ctx.query.count, ctx.query.sort, ctx.query.sortDir);
+  let channels = await redisCache.wrap('channels', function() {
+    return getChannels(ctx.query.count, ctx.query.sort, ctx.query.sortDir);
+  });
+  ctx.body = channels;
 });
 
 channels.use(channelsRouter.routes())
 
+//Main app
 const app = new Koa();
 
 const statusRouter = new Router({
@@ -56,6 +61,7 @@ require('./server/routes/channel')({channelRouter});
 
 app
   .use(logger())
+//  .use(jwt({secret: 'super-secret'}))
   .use(async (ctx, next) => {
     try {
       await next();

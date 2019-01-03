@@ -2,9 +2,6 @@ const models = require('../models')
 
 module.exports = (
   async function getChannels(count= 10, sort= 'id', sortDir= 'desc') {
-    console.log(count);
-    console.log(sort);
-    console.log(sortDir);
     sortDir = sortDir.toUpperCase();
     sortDir = ((sortDir === 'ASC') || (sortDir === 'DESC')) ? sortDir : 'ASC';
 
