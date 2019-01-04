@@ -1,5 +1,25 @@
 const bodyParser = require('koa-body')();
 const models = require('../models');
+const cacheManager = require('cache-manager');
+const redisStore = require('cache-manager-redis-store');
+
+//Cache initialize
+
+const redisCache = cacheManager.caching({
+  store: redisStore,
+  db:0,
+  ttl:0,
+});
+
+// listen for redis connection error event
+var redisClient = redisCache.store.getClient();
+
+redisClient.on('error', (error) => {
+  // handle error here
+  console.log(error);
+});
+
+const ttl = 5;
 
 async function chaeckThemesTag(theme_tags) {
   if(typeof(theme_tags) === 'string') {
@@ -21,12 +41,14 @@ async function chaeckThemesTag(theme_tags) {
 module.exports = (({channelRouter}) => {
   channelRouter
     .get('/', async(ctx, next) => {
-      const channels = await models.Channel.findAll({
-	include: [{
-	  model: models.Tag,
-	  as: 'tags',
-	  required: false
-	}]
+      const channels = await redisCache.wrap('channels', function() {
+	models.Channel.findAll({
+	  include: [{
+	    model: models.Tag,
+	    as: 'tags',
+	    required: false
+	  }]
+	});
       });
       ctx.body = channels;
     })

@@ -1,7 +1,7 @@
 const models = require('../models')
 
 module.exports = (
-  async function getChannels(count= 10, sort= 'id', sortDir= 'desc') {
+  async function getChannels(query, count= 10, sort= 'id', sortDir= 'desc') {
     sortDir = sortDir.toUpperCase();
     sortDir = ((sortDir === 'ASC') || (sortDir === 'DESC')) ? sortDir : 'ASC';
 
@@ -16,7 +16,21 @@ module.exports = (
 	model: models.History
       }, {
 	model: models.Status
-      }]
+      }],
+      where: {
+	$or: [
+	  {
+	    social_messengers: query
+	  }, {
+	    email: query
+	  }, {
+	    name: query
+	  }, {
+	    description: query
+	  }, {
+	    channel_name: query
+	  }
+	]}
     });
 
     return channels;
