@@ -1,12 +1,10 @@
 const models = require('../models')
 
 module.exports = (
-  async function getChannels(query, count= 10, sort= 'id', sortDir= 'desc') {
-    sortDir = sortDir.toUpperCase();
-    sortDir = ((sortDir === 'ASC') || (sortDir === 'DESC')) ? sortDir : 'ASC';
-
-    const channels = await models.Channel.findAll({
+  async function getChannels(count= 10, page=1, sort= 'id', sortDir= 'desc', query, status) {
+    let conditions = {
       limit: count,
+      offset: page,
       order: [[sort, sortDir]],
       include: [{
 	model: models.Tag,
@@ -16,9 +14,17 @@ module.exports = (
 	model: models.History
       }, {
 	model: models.Status
-      }],
-      where: {
-	$or: [
+      }]
+    }
+    let where = {};
+    sortDir = sortDir.toUpperCase();
+    sortDir = ((sortDir === 'ASC') || (sortDir === 'DESC')) ? sortDir : 'ASC';
+    count = (count>=10) && (count<=100) ? count : ((count < 10) ? 10 : 100);
+    page = (page === '1') ? 0 : page*count;
+
+    if(typeof status !== 'undefined') { where.status = status }
+    if(typeof query !== 'undefined') {
+      where.$or = [
 	  {
 	    social_messengers: query
 	  }, {
@@ -30,8 +36,15 @@ module.exports = (
 	  }, {
 	    channel_name: query
 	  }
-	]}
-    });
+	];
+    }
+    
+    if(Object.keys(where).length) {
+      conditions.where = where;
+    }
+
+
+    const channels = await models.Channel.findAll(conditions);
 
     return channels;
   });

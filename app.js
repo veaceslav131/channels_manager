@@ -12,7 +12,7 @@ const channels = new Koa();
 
 const channelsRouter = new Router();
 channelsRouter.get('/', bodyParser, async ctx => {
-  let channels = await getChannels(ctx.query.query, ctx.query.count, ctx.query.sort, ctx.query.sortDir);
+  let channels = await getChannels(ctx.query.count, ctx.query.page, ctx.query.sort, ctx.query.sortDir, ctx.query.query, ctx.query.status);
   ctx.body = channels;
 });
 
